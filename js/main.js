@@ -94,6 +94,39 @@ function generateGrid() {
     }
 }
 
+function findTheFirstUnEmptyCellFromRight(row, column) {
+    for (let j = 3; j > column ; j--) {
+        if (grid[row][j] === 0) {
+            return j;
+        }
+    }
+
+    return -1;
+}
+
+function moveRight(row, column) {
+    if (grid[row][column] !== 0) {
+        let theFirstUnemptyCell = findTheFirstUnEmptyCellFromRight(row, column);
+        if (theFirstUnemptyCell !== -1) {
+            grid[row][theFirstUnemptyCell] = grid[row][column];
+            grid[row][column] = 0;
+        }
+    }
+}
+function updateGrid() {
+    grid.forEach((rowGrid, row) => {
+        for (let column = 4 - 2; column >= 0; column--) {
+            moveRight(row, column);
+        }
+    })
+}
+
+function onPressKeyDown() {
+    updateGrid();
+
+    flushUI();
+}
+
 function start() {
     let canvasDOM = document.getElementById("canvas");
     canvasDOM.width = window.innerWidth;
@@ -109,4 +142,6 @@ function start() {
     flushUI();
 
     addNumber();
+
+    document.addEventListener('keydown', onPressKeyDown);
 }
