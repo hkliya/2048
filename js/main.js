@@ -12,10 +12,10 @@ var addScore = function (canvas) {
     canvas.add(score);
 };
 
-var createRect = function (i, j, fill) {
+var createRect = function (row, column, fill) {
     var rect = new fabric.Rect({
-        top: gridTop + i * (rectSize + 1),
-        left: gridLeft + j * (rectSize + 1),
+        top: gridTop + row * (rectSize + 1),
+        left: gridLeft + column * (rectSize + 1),
         width: rectSize,
         height: rectSize,
         fill: fill
@@ -24,9 +24,9 @@ var createRect = function (i, j, fill) {
 };
 var getGrids = function () {
     let grids = [];
-    for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 4; j++) {
-            var rect = createRect(i, j, 'red');
+    for (let row = 0; row < 4; row++) {
+        for (let column = 0; column < 4; column++) {
+            var rect = createRect(row, column, 'red');
             grids.push(rect);
         }
     }
@@ -40,24 +40,36 @@ function addGrid(canvas) {
     }
 }
 
-var addNumberWithPosition = function (i, j, canvas) {
+var addNumberWithPosition = function (row, column, canvas) {
     let fill = 'blue';
-    let block = createRect(i, j, fill);
+    let block = createRect(row, column, fill);
     canvas.add(block);
 
     var number = new fabric.Text('2', {
-        left: gridLeft + i * rectSize,
-        top: gridTop + j * rectSize,
+        top: gridTop + row * rectSize,
+        left: gridLeft + column * rectSize,
         fontSize: 60,
         fill: "white"
     });
     canvas.add(number);
 };
+
+function generateRandomPosition() {
+    let generateRandomNumberBetweenZeroAndFour = function () {
+        return Math.floor(Math.random() * 4);
+    };
+
+    return {
+        row: generateRandomNumberBetweenZeroAndFour(),
+        column: generateRandomNumberBetweenZeroAndFour()
+    }
+}
+
 function addNumber(canvas) {
-    let i = 0;
-    let j = 0;
-    addNumberWithPosition(i, j, canvas);
-    addNumberWithPosition(1, 1, canvas);
+    for (let i = 0; i < 2; i++) {
+        let position = generateRandomPosition();
+        addNumberWithPosition(position.row, position.column, canvas);
+    }
 }
 
 function start() {
