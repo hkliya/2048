@@ -94,7 +94,7 @@ function generateGrid() {
     }
 }
 
-function findTheFirstUnEmptyCellFromRight(row, column) {
+function findTheFirstUnEmptyCellFromRight(row, column, grid) {
     for (let j = 3; j > column; j--) {
         if (grid[row][j] === 0) {
             return j;
@@ -113,31 +113,64 @@ function findTheFirstUnEmptyCellFromLeft(row, column) {
 
     return -1;
 }
-var move = function (row, column, theFirstUnemptyCell) {
+var move = function (row, column, theFirstUnemptyCell, grid) {
     if (grid[row][column] !== 0 && theFirstUnemptyCell !== -1) {
         grid[row][theFirstUnemptyCell] = grid[row][column];
         grid[row][column] = 0;
     }
 };
+
+var moveRight = function (grid) {
+    grid.forEach((rowGrid, row) => {
+        for (let column = 4 - 2; column >= 0; column--) {
+            let theFirstUnemptyCell = findTheFirstUnEmptyCellFromRight(row, column, grid);
+            move(row, column, theFirstUnemptyCell, grid);
+        }
+    });
+};
+
+function rotate(grid) {
+    let tempGrid = [];
+
+    for (var i = 0; i < 4; i++) {
+        tempGrid[i] = [];
+        for (var j = 0; j < 4; j++) {
+            tempGrid[i][j] = grid[3 - j][i];
+        }
+    }
+
+    return tempGrid;
+}
+
 function updateGrid(key) {
     switch (key) {
         case 'ArrowRight': {
-            grid.forEach((rowGrid, row) => {
-                for (let column = 4 - 2; column >= 0; column--) {
-                    let theFirstUnemptyCell = findTheFirstUnEmptyCellFromRight(row, column);
-                    move(row, column, theFirstUnemptyCell);
-                }
-            });
+            moveRight(grid);
             break;
         }
         case 'ArrowLeft': {
-            grid.forEach((rowGrid, row) => {
-                for (let column = 1; column < 4; column++) {
-                    let theFirstUnemptyCell = findTheFirstUnEmptyCellFromLeft(row, column);
-                    move(row, column, theFirstUnemptyCell);
-                }
-            })
+            let newGrid = rotate(grid);
+            newGrid = rotate(newGrid);
+            moveRight(newGrid);
+            newGrid = rotate(rotate(newGrid));
+            grid = newGrid;
+            break;
         }
+        case 'ArrowUp': {
+            let newGrid = rotate(grid);
+            moveRight(newGrid);
+            newGrid = rotate(rotate(rotate(newGrid)));
+            grid = newGrid;
+            break;
+        }
+        case 'ArrowDown': {
+            let newGrid = rotate(rotate(rotate(grid)));
+            moveRight(newGrid);
+            newGrid = rotate(newGrid);
+            grid = newGrid;
+            break;
+        }
+
     }
 }
 
