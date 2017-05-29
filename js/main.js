@@ -24,23 +24,18 @@ var createRect = function (row, column, fill) {
     });
     return rect;
 };
-var getGrids = function () {
-    let grids = [];
-    for (let row = 0; row < 4; row++) {
-        for (let column = 0; column < 4; column++) {
-            var rect = createRect(row, column, 'red');
-            grids.push(rect);
-        }
-    }
 
-    return grids;
+var drawGrid = function (canvas) {
+    return grid.forEach((rowGrid, row) => {
+        rowGrid.forEach((cell, column) => {
+            if (cell === 0) {
+                canvas.add(createRect(row, column, 'red'));
+            } else {
+                addNumberWithPosition(row, column, canvas);
+            }
+        });
+    });
 };
-function addGrid(canvas) {
-    var grids = getGrids();
-    for (let rect of grids) {
-        canvas.add(rect)
-    }
-}
 
 var addNumberWithPosition = function (row, column, canvas) {
     let fill = 'blue';
@@ -76,10 +71,16 @@ function addNumber(canvas) {
             continue;
         }
 
-        addNumberWithPosition(position.row, position.column, canvas);
+        grid[position.row][position.column] = 2;
 
         i++;
     }
+
+    flushUI(canvas);
+}
+
+function flushUI(canvas) {
+    drawGrid(canvas);
 }
 
 function generateGrid() {
@@ -103,6 +104,8 @@ function start() {
 
     addGameTitle(canvas);
     addScore(canvas);
-    addGrid(canvas);
+
+    flushUI(canvas);
+
     addNumber(canvas);
 }
