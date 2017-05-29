@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script>
+        function start() {
+            let canvasDOM = document.getElementById("canvas");
+            canvasDOM.width = window.innerWidth;
+            canvasDOM.height = window.innerHeight;
+
+            var canvas = new fabric.Canvas('canvas');
+
+            var text = new fabric.Text('2048', {left: 100, top: 200});
+            canvas.add(text);
+        }
+    </script>
 </head>
-<body>
-<canvas id="canvas" width="300" height="300"></canvas>
+<body onload="start()">
+<canvas id="canvas"></canvas>
 
 <script src="node_modules/fabric/dist/fabric.js"></script>
-<script>
-    var canvas = new fabric.Canvas('canvas');
-
-    var rect = new fabric.Rect({
-        top : 100,
-        left : 100,
-        width : 60,
-        height : 70,
-        fill : 'red'
-    });
-
-    canvas.add(rect);
-</script>
 </body>
 </html>
