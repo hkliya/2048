@@ -95,7 +95,7 @@ function generateGrid() {
 }
 
 function findTheFirstUnEmptyCellFromRight(row, column) {
-    for (let j = 3; j > column ; j--) {
+    for (let j = 3; j > column; j--) {
         if (grid[row][j] === 0) {
             return j;
         }
@@ -104,25 +104,45 @@ function findTheFirstUnEmptyCellFromRight(row, column) {
     return -1;
 }
 
-function moveRight(row, column) {
-    if (grid[row][column] !== 0) {
-        let theFirstUnemptyCell = findTheFirstUnEmptyCellFromRight(row, column);
-        if (theFirstUnemptyCell !== -1) {
-            grid[row][theFirstUnemptyCell] = grid[row][column];
-            grid[row][column] = 0;
+function findTheFirstUnEmptyCellFromLeft(row, column) {
+    for (let j = 0; j < column; j++) {
+        if (grid[row][j] === 0) {
+            return j;
+        }
+    }
+
+    return -1;
+}
+var move = function (row, column, theFirstUnemptyCell) {
+    if (grid[row][column] !== 0 && theFirstUnemptyCell !== -1) {
+        grid[row][theFirstUnemptyCell] = grid[row][column];
+        grid[row][column] = 0;
+    }
+};
+function updateGrid(key) {
+    switch (key) {
+        case 'ArrowRight': {
+            grid.forEach((rowGrid, row) => {
+                for (let column = 4 - 2; column >= 0; column--) {
+                    let theFirstUnemptyCell = findTheFirstUnEmptyCellFromRight(row, column);
+                    move(row, column, theFirstUnemptyCell);
+                }
+            });
+            break;
+        }
+        case 'ArrowLeft': {
+            grid.forEach((rowGrid, row) => {
+                for (let column = 1; column < 4; column++) {
+                    let theFirstUnemptyCell = findTheFirstUnEmptyCellFromLeft(row, column);
+                    move(row, column, theFirstUnemptyCell);
+                }
+            })
         }
     }
 }
-function updateGrid() {
-    grid.forEach((rowGrid, row) => {
-        for (let column = 4 - 2; column >= 0; column--) {
-            moveRight(row, column);
-        }
-    })
-}
 
-function onPressKeyDown() {
-    updateGrid();
+function onPressKeyDown(event) {
+    updateGrid(event.key);
 
     flushUI();
 }
