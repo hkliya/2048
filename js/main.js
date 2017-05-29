@@ -2,6 +2,8 @@ const gridLeft = 60;
 const rectSize = 70;
 const gridTop = 200;
 
+let grid;
+
 var addGameTitle = function (canvas) {
     var title = new fabric.Text('2048', {left: 170, top: 50});
     canvas.add(title);
@@ -66,9 +68,27 @@ function generateRandomPosition() {
 }
 
 function addNumber(canvas) {
-    for (let i = 0; i < 2; i++) {
+    let i = 0;
+    while (i < 2) {
         let position = generateRandomPosition();
+
+        if (grid[position.row][position.column] !== 0) {
+            continue;
+        }
+
         addNumberWithPosition(position.row, position.column, canvas);
+
+        i++;
+    }
+}
+
+function generateGrid() {
+    grid = [];
+    for (let row = 0; row < 4; row++) {
+        grid[row] = [];
+        for (let column = 0; column < 4; column++) {
+            grid[row][column] = 0;
+        }
     }
 }
 
@@ -78,6 +98,8 @@ function start() {
     canvasDOM.height = window.innerHeight;
 
     var canvas = new fabric.Canvas('canvas');
+
+    generateGrid();
 
     addGameTitle(canvas);
     addScore(canvas);
