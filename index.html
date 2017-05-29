@@ -1,14 +1,23 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>2048</title>
-    <script src="./js/main.js"></script>
 </head>
 <body>
+<canvas id="canvas" width="300" height="300"></canvas>
 
+<script src="node_modules/fabric/dist/fabric.js"></script>
+<script>
+    var canvas = new fabric.Canvas('canvas');
+
+    var rect = new fabric.Rect({
+        top : 100,
+        left : 100,
+        width : 60,
+        height : 70,
+        fill : 'red'
+    });
+
+    canvas.add(rect);
+</script>
 </body>
 </html>
