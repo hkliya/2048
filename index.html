@@ -9,22 +9,11 @@
             padding: 0;
         }
     </style>
-    <script>
-        function start() {
-            let canvasDOM = document.getElementById("canvas");
-            canvasDOM.width = window.innerWidth;
-            canvasDOM.height = window.innerHeight;
-
-            var canvas = new fabric.Canvas('canvas');
-
-            var text = new fabric.Text('2048', {left: 100, top: 200});
-            canvas.add(text);
-        }
-    </script>
 </head>
 <body onload="start()">
 <canvas id="canvas"></canvas>
 
 <script src="node_modules/fabric/dist/fabric.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
