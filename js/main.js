@@ -3,13 +3,14 @@ const rectSize = 70;
 const gridTop = 200;
 
 let grid;
+let canvas;
 
-var addGameTitle = function (canvas) {
+var addGameTitle = function () {
     var title = new fabric.Text('2048', {left: 170, top: 50});
     canvas.add(title);
 };
 
-var addScore = function (canvas) {
+var addScore = function () {
     var score = new fabric.Text('Score: 0', {left: 175, top: 110, fontSize: 20});
     canvas.add(score);
 };
@@ -25,19 +26,19 @@ var createRect = function (row, column, fill) {
     return rect;
 };
 
-var drawGrid = function (canvas) {
+var drawGrid = function () {
     return grid.forEach((rowGrid, row) => {
         rowGrid.forEach((cell, column) => {
             if (cell === 0) {
                 canvas.add(createRect(row, column, 'red'));
             } else {
-                addNumberWithPosition(row, column, canvas);
+                addNumberWithPosition(row, column);
             }
         });
     });
 };
 
-var addNumberWithPosition = function (row, column, canvas) {
+var addNumberWithPosition = function (row, column) {
     let fill = 'blue';
     let block = createRect(row, column, fill);
     canvas.add(block);
@@ -62,7 +63,7 @@ function generateRandomPosition() {
     }
 }
 
-function addNumber(canvas) {
+function addNumber() {
     let i = 0;
     while (i < 2) {
         let position = generateRandomPosition();
@@ -76,11 +77,11 @@ function addNumber(canvas) {
         i++;
     }
 
-    flushUI(canvas);
+    flushUI();
 }
 
-function flushUI(canvas) {
-    drawGrid(canvas);
+function flushUI() {
+    drawGrid();
 }
 
 function generateGrid() {
@@ -98,14 +99,14 @@ function start() {
     canvasDOM.width = window.innerWidth;
     canvasDOM.height = window.innerHeight;
 
-    var canvas = new fabric.Canvas('canvas');
+    canvas = new fabric.Canvas('canvas');
 
     generateGrid();
 
-    addGameTitle(canvas);
-    addScore(canvas);
+    addGameTitle();
+    addScore();
 
-    flushUI(canvas);
+    flushUI();
 
-    addNumber(canvas);
+    addNumber();
 }
